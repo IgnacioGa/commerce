@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+	{% for data in info %}
+	<div class="container">
+		<!--Title of the page-->
+		<h2>
+			{{ data.title }}
+			{% if title.active %}
+   				<small class="text-muted">State: active</small>
+   			{% else %}
+   				<small class="text-muted">State: closed</small>
+   			{% endif %}		
+		</h2>
+		<!--Box of the listing-->
+		<div class="media">
+			<img src="{{ data.urlImage }}" class="img-fluid" alt="Responsive image">			
+			<div class="media-middle">
+				<h4 class="mt-0">Description</h5>
+				<p class="font-italic">{{ data.description }}</p>
+				<p id="dateTime" class="mb-0">Created: {{ data.date }} by {{ data.creator }} </p>
+			</div>
+		</div>
+		<!--Form for a Bid-->
+		<form class="forms" action="{% url 'lis:page' data.title %}" method="post">
+			{% csrf_token %}
+  			<div class="form-group">
+    			{{ form }}
+    			<small id="emailHelp" class="form-text text-muted">{{ form.id }}</small>
+  			</div>
+  			<button type="submit" class="btn btn-primary">Place bid</button>
+  		</form>
+		<!--Characteristics-->
+		<h4 id="chaTitle">Characteristics</h1>
+		<ul class="list-group">
+			{% for car in carac %}
+  			<li class="list-group-item">{{ car.characteristic }}</li>
+  			{% empty %}
+  			<li class="list-group-item">No contains characteristics</li>
+  			{% endfor %}
+		</ul>
+	</div>
+	{% endfor %}	
+{% endblock %}

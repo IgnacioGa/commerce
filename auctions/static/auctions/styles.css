@@ -1,0 +1,63 @@
+body {
+    padding: 10px;
+    font-size: 100%;
+}
+.navbar{
+	background-color: #1a1a1a;
+}
+.navbar-brand{
+	  margin-right: 0rem;
+	  font-size: 1rem;
+}
+#titleStyle{
+	font-size: 2rem;
+}
+.navbar-collapse{
+	margin-left: 1em;
+}
+.media{
+	border-style: outset;
+	margin-top: 10px;
+	position: relative;
+}
+#imaList{
+	width: 200px;
+	transition: transform .2s;
+}
+#imaList:hover{
+	transform: scale(1.2);
+}
+#dateTime{
+	color: #838484;
+}
+.img-fluid{
+	width: 300px;
+	transition: transform .2s;
+}
+.img-fluid:hover{
+	transform: scale(1.2);
+}
+.container{
+	margin-left: 45px;
+}
+@media (min-width: 768px){
+	.container{
+		max-width: 95%;
+	}
+}
+.btn-secondary{
+	width: 120px;
+	height: 35px;
+}
+#chaTitle{
+	margin-top: 30px;
+}
+.form-control{
+	width: 170px;
+}
+form{
+	margin-top: 1em;
+}
+.form-group{
+	margin-bottom: 0.5em;
+}

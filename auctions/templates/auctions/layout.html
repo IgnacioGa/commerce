@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar  navbar-expand-lg navbar-dark" role="navigation">
+            <h1><a class="navbar-brand" id="titleStyle" href="{% url 'lis:index' %}">Auctions</a></h1>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <a class="nav-item nav-link active" href="#">Watchlist</a>
+                        <a class="nav-item nav-link active" href="{% url 'lis:logout' %}">Log Out</a>
+                    {% else %}
+                        <a class="nav-item nav-link active" href="{% url 'lis:login' %}">Log In</a>
+                        <a class="nav-item nav-link active" href="{% url 'lis:register' %}">Register</a>
+                    {% endif %}
+                    <a class="nav-item nav-link active" href="#">Create a listing</a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categorys
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% for cats in categorys %}
+                                <a class="dropdown-item" href="#">{{ cats.category }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="navbar-brand">
+                {% if user.is_authenticated %}
+                    Signed in as <strong>{{ user.username }}</strong>
+                    <img id="icono" src="https://t3.ftcdn.net/jpg/02/89/39/26/240_F_289392617_XL26KXZL5CECcJGIptOP5R3A06mO2nYQ.jpg" width="30" height="30" class="d-inline-block align-top" alt="" title="Icono elegido por @Puabardagil">
+                {% else %}
+                    Not signed in.
+                    <img id="icono" src="https://t3.ftcdn.net/jpg/02/89/39/26/240_F_289392617_XL26KXZL5CECcJGIptOP5R3A06mO2nYQ.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+                {% endif %}
+            </div>
+
+            
+        </nav>
+
+        <hr>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
