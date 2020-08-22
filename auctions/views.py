@@ -3,10 +3,11 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+import datetime
 
 from .models import User, Listing, Bid, Category, Watchlist, Comments, Characteristic
 
-from .forms import Bids
+from .forms import Bids, CreateLis
 
 
 def index(request):
@@ -80,3 +81,30 @@ def page(request, title):
                     "carac": lista,
                     "form": form
                 })
+
+def create(request):
+    if request.method == 'POST':
+        form = CreateLis(request.POST)
+        us = request.user
+        user = User.objects.get(id=us.id)
+        if form.is_valid():
+            title = form.cleaned_data["Title"]
+            descripcion = form.cleaned_data["Description"]
+            initialBid = form.cleaned_data["InitialBid"]
+            image = form.cleaned_data["URLImagen"]
+            category = form.cleaned_data["Category"]
+            date = datetime.datetime.now()
+            act = True
+            new = Listing(title=title, description=descripcion, initialBid=initialBid, urlImage=image, category=category, date=date, active=act, creator=user)
+            new.save()
+            return HttpResponseRedirect(reverse('lis:page', args=(title,)))
+    else:
+        form = CreateLis()
+        return render(request, "auctions/create.html",{
+            "form": form
+            })
+
+def category(request, category):
+    return render(request, "auctions/category.html",{
+            "listing": Listing.objects.filter(category__category=category)
+            })

@@ -15,7 +15,7 @@ class Listing(models.Model):
 	title = models.CharField(max_length=64)
 	description = models.TextField()
 	initialBid = models.DecimalField(max_digits=8, decimal_places=2)
-	urlImage = models.CharField(max_length=255)
+	urlImage = models.CharField(max_length=255, blank=True, null=True)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="fields", blank=True, null=True)
 	date = models.DateTimeField()
 	actualBid = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
