@@ -7,12 +7,37 @@
 		<!--Title of the page-->
 		<h2>
 			{{ data.title }}
-			{% if title.active %}
+			{% if data.active %}
    				<small class="text-muted">State: active</small>
+   				{% if user.is_authenticated %}
+   					{% for watch in WL %}
+   						{% if watch %}
+   							<form class="forms" action="{% url 'lis:changeWL' data.title %}" method="post">
+   							{% csrf_token %}
+   							<button type="submit" class="wl btn btn-secondary">Remove from watchlist</button>
+   							</form>
+   						{% endif %}
+   					{% empty %}
+   					<form class="forms" action="{% url 'lis:changeWL' data.title %}" method="post">
+   						{% csrf_token %}
+   						<button type="submit" class="wl btn btn-success">Add to watchlist</button>
+   					</form>   				
+   					{% endfor %}
+   						{% if creator %}
+   							<form class="forms" action="{% url 'lis:status' data.title %}" method="post">
+   							{% csrf_token %}
+   								<button type="submit" class="wl btn btn-warning">Close bid</button>
+   							</form>
+   						{% endif %}
+   				{% endif %}
    			{% else %}
    				<small class="text-muted">State: closed</small>
+          {% if user == ganador %}
+            <h2> You won this bid, congratz!</h2>
+          {% endif %}
    			{% endif %}		
 		</h2>
+
 		<!--Box of the listing-->
 		<div class="media">
 			<img src="{{ data.urlImage }}" class="img-fluid" alt="Responsive image">			
@@ -23,14 +48,34 @@
 			</div>
 		</div>
 		<!--Form for a Bid-->
-		<form class="forms" action="{% url 'lis:page' data.title %}" method="post">
+		<form class="forms" action="{% url 'lis:bids' data.title %}" method="post">
 			{% csrf_token %}
   			<div class="form-group">
-    			{{ form }}
+  				{% if data.actualBid %}
+  					<p>Actual bid: {{ data.actualBid }}</p>
+  				{% else %}
+  					<p>Actual bid: {{ data.initialBid }}</p>
+  				{% endif %}
+  				{% if user.is_authenticated and data.active%}
+  						{% if messages %}
+  							{% for message in messages %}
+  								<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+  									{{ message }}
+								</div>
+							{% endfor %}
+						{% endif %}
+    					{{ form }}
+    					<small id="emailHelp" class="form-text text-muted">{{ form.id }}</small>
+  					</div>
+  					<button type="submit" class="btn btn-primary">Place bid</button>
+  				</form>
+  				{% else %}
+  				<div class="form-group"> 				
+  				<input type="text" name="" placeholder="Bid" readonly>
     			<small id="emailHelp" class="form-text text-muted">{{ form.id }}</small>
   			</div>
-  			<button type="submit" class="btn btn-primary">Place bid</button>
-  		</form>
+  			<button type="submit" class="btn btn-primary" disabled="">Place bid</button>
+  				{% endif %}
 		<!--Characteristics-->
 		<h4 id="chaTitle">Characteristics</h1>
 		<ul class="list-group">
@@ -41,5 +86,62 @@
   			{% endfor %}
 		</ul>
 	</div>
+  <div class="container">
+<div class="row bootstrap snippets bootdeys">
+    <div class="col-md-8 col-sm-12">
+        <div class="comment-wrapper">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 id="chaTitle">Comment panel</h1>
+                </div>
+                <div class="panel-body">
+                  {% if user.is_authenticated %}
+                  <form action="{% url 'lis:page' data.title %}" method="post">
+                    {% csrf_token %}
+                    <textarea class="form-control" placeholder="write a comment..." rows="5" name="comment"></textarea>
+                    <br>
+                    <button type="submit" class="btn btn-info pull-right">Post</button>
+                    <div class="clearfix"></div>
+                    <hr>  
+                   </form>                  
+                  {% else %}
+                    {% if messages %}
+                      {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                          {{ message }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                    <textarea class="form-control" placeholder="write a comment..." rows="5" readonly=""></textarea>
+                    <br>
+                    <button type="button" class="btn btn-info pull-right" disabled="">Post</button>
+                    <div class="clearfix"></div>
+                    <hr>
+                  {% endif %}
+                      <ul class="media-list">
+                      {% for comment in comments %}
+                        <li class="media">
+                            <a href="#" class="pull-left">
+                                <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                            </a>
+                            <div class="media-body">
+                                <span class="text-muted pull-right">
+                                    <small class="text-muted">{{ comment.date }}</small>
+                                </span>
+                                <strong class="text-success">{{ comment.user }}</strong>
+                                <p>  
+                                    {{ comment.comment }}
+                                </p>
+                            </div>
+                        </li>
+                        {% endfor %}                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
 	{% endfor %}	
 {% endblock %}

@@ -35,7 +35,7 @@ class Bid(models.Model):
 		return f"{self.user}: {self.listing} for {self.bid}"
 
 class Watchlist(models.Model):
-	item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="watched")
+	item = models.ManyToManyField(Listing, related_name="watched")
 	personal = models.ForeignKey(User, on_delete=models.CASCADE, related_name="list")
 	date = models.DateTimeField()
 

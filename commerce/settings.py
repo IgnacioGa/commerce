@@ -1,4 +1,4 @@
-from django.conf import global_settings
+from django.contrib.messages import constants as messages
 
 """
 Django settings for commerce project.
@@ -71,6 +71,13 @@ TEMPLATES = [
     },
 ]
 
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 WSGI_APPLICATION = 'commerce.wsgi.application'
 

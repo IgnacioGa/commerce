@@ -3,6 +3,7 @@
 {% block body %}
     <h2>Active Listings</h2>
     {% for title in titles %}
+      {% if title.active %}
     	<div class="media">
     		<a class="pr-3" href="{% url 'lis:page' title.title %}">
   				<img class="align-self-center mr-2" id="imaList" src="{{ title.urlImage }}" alt="Listing image ">
@@ -12,12 +13,8 @@
     			<p>{{ title.description }}</p>
     			<p class="mb-1">Initial bid: {{ title.initialBid }}</p>
     			<p id="dateTime" class="mb-0">Created: {{ title.date }} by {{ title.creator }} </p> 
-    			{% if title.active %}
-   					<p><a class="btn btn-primary" href="{% url 'lis:page' title.title %}">See</a> Status: Active</p>
-   				{% else %}
-   					<p><a class="btn btn-primary" href="{% url 'lis:page' title.title %}">See</a> Status: Closed</p>
-   				{% endif %}	
    			</div>
+      {% endif %} 
 		</div>
 	{% endfor %}
 {% endblock %}
