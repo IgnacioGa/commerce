@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+	<h2>Closed listings</h2>
+    {% for title in list %}
+      {% if title.ganador.user == user %}
+        <h2>Congratz, you won this bid</h2>
+      {% endif %}       
+    	<div class="media">
+    		<a class="pr-3" href="{% url 'lis:page' title.listing.title %}">
+  				<img class="align-self-center mr-2" id="imaList" src="{{ title.listing.urlImage }}" alt="Listing image ">
+  			</a>
+  			<div class="media-body">  					
+    			<a href="{% url 'lis:page' title.listing.title %}"><h5 class="mt-0">{{ title.listing.title }}</h5></a>
+    			<p>{{ title.listing.description }}</p>
+    			<p class="mb-1">Initial bid: {{ title.listing.initialBid }}</p>
+    			<p id="dateTime" class="mb-0">Created: {{ title.listing.date }} by {{ title.listing.creator }} </p> 
+   			</div>
+		</div>
+	{% endfor %}
+{% endblock %}
